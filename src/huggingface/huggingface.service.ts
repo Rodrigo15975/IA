@@ -16,14 +16,14 @@ export class HuggingfaceService {
   }
 
   async generateText(
-    prompt: string = 'Como se dice hola en ingles?',
+    prompt: string = 'Que es inteligencia artificial, dame un documental',
   ): Promise<string> {
     try {
       const response = await this.hf.textGeneration({
-        model: 'gpt2', // Note: 'gpt2' is the correct model ID (without hyphen)
+        model: 'gpt2', // Modelo de traducción
         inputs: prompt,
         parameters: {
-          max_length: 50, // Aumenta la longitud máxima
+          max_length: 20, // Aumenta la longitud máxima
           temperature: 0.7, // Ajusta la temperatura
           do_sample: true, // Habilita el muestreo
         },
@@ -36,6 +36,22 @@ export class HuggingfaceService {
       throw new Error(`Failed to generate text: ${error}`)
     }
   }
+  // async generateText(prompt: string = 'Hola?') {
+  //   try {
+  //     const response = await this.hf.request({
+  //       model: 'Helsinki-NLP/opus-mt-es-en',
+  //       inputs: prompt,
+  //     })
+  //     this.logger.debug('Translated text ', response)
+  //     return {
+  //       response,
+  //     }
+  //     return {}
+  //   } catch (error) {
+  //     this.logger.error(`Text generation failed: ${error}`, error)
+  //     throw new Error(`Failed to generate text: ${error}`)
+  //   }
+  // }
 
   async chatCompletion(messages: Array<{ role: string; content: string }>) {
     try {
