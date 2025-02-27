@@ -15,7 +15,7 @@ export class HuggingfaceService {
     this.hf = new HfInference(apiKey)
   }
 
-  async chat(prompt: string): Promise<string> {
+  async chat(prompt: string) {
     try {
       this.logger.debug(`Prompt: ${prompt}`)
       const response = await this.hf.textGeneration({
@@ -25,7 +25,9 @@ export class HuggingfaceService {
       })
 
       this.logger.debug(`Chat response: ${JSON.stringify(response)}`)
-      return response.generated_text
+      return {
+        response: response.generated_text,
+      }
     } catch (error) {
       this.logger.error('Error en chat:', error)
       throw error
