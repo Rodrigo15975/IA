@@ -26,6 +26,7 @@ export class HuggingfaceService {
       return {
         response: response.generated_text,
         details: response.details,
+        model: response.model,
       }
     } catch (error) {
       this.logger.error('Error en chat:', error)
