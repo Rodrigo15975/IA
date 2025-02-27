@@ -17,6 +17,7 @@ export class HuggingfaceService {
 
   async generateCaption(imageUrl: string) {
     try {
+      this.logger.debug('Generating caption...')
       const response = await this.hf.textToImage({
         model: 'Qwen/Qwen2.5-VL-7B-Instruct',
         inputs: imageUrl,
