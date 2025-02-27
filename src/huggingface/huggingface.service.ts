@@ -15,16 +15,19 @@ export class HuggingfaceService {
     this.hf = new HfInference(apiKey)
   }
 
-  async generateCaption(imageUrl: string) {
+  async chat(prompt: string): Promise<string> {
     try {
-      this.logger.debug('Generating caption...')
-      const response = await this.hf.textToImage({
-        model: 'Qwen/Qwen2.5-VL-7B-Instruct',
-        inputs: imageUrl,
+      this.logger.debug(`Prompt: ${prompt}`)
+      const response = await this.hf.textGeneration({
+        model: 'HuggingFaceH4/zephyr-7b-alpha', // CORRECTO
+        inputs: prompt,
+        parameters: { max_new_tokens: 200 },
       })
-      return response
+
+      this.logger.debug(`Chat response: ${JSON.stringify(response)}`)
+      return response.generated_text
     } catch (error) {
-      this.logger.error('Error generating caption:', error)
+      this.logger.error('Error en chat:', error)
       throw error
     }
   }
