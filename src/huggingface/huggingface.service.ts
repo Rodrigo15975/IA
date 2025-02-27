@@ -27,6 +27,7 @@ export class HuggingfaceService {
       this.logger.debug(`Chat response: ${JSON.stringify(response)}`)
       return {
         response: response.generated_text,
+        details: response.details,
       }
     } catch (error) {
       this.logger.error('Error en chat:', error)
