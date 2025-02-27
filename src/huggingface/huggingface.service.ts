@@ -23,10 +23,15 @@ export class HuggingfaceService {
         inputs: prompt,
         parameters: { max_new_tokens: 200 },
       })
+      this.logger.debug({
+        response: response.generated_text,
+        details: response.details,
+      })
       return {
         response: response.generated_text,
         details: response.details,
         model: response.model,
+        status: 200,
       }
     } catch (error) {
       this.logger.error('Error en chat:', error)
