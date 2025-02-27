@@ -15,6 +15,19 @@ export class HuggingfaceService {
     this.hf = new HfInference(apiKey)
   }
 
+  async generateCaption(imageUrl: string) {
+    try {
+      const response = await this.hf.textToImage({
+        model: 'Qwen/Qwen2.5-VL-7B-Instruct',
+        inputs: imageUrl,
+      })
+      return response
+    } catch (error) {
+      this.logger.error('Error generating caption:', error)
+      throw error
+    }
+  }
+
   async generateText(
     prompt: string = 'Que es inteligencia artificial, dame un documental',
   ): Promise<string> {
