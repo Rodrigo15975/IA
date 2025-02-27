@@ -40,7 +40,13 @@ export class HuggingfaceService {
       model: 'stabilityai/stable-diffusion-xl-base-1.0',
       inputs: 'Un bosque mágico con luces de neón',
     })
-    return response
+    this.logger.debug({
+      response,
+    })
+    return {
+      response: response,
+      status: 200,
+    }
   }
   async chatOtherModel(prompt: string) {
     try {
