@@ -23,6 +23,33 @@ export class HuggingfaceService {
         inputs: prompt,
         parameters: { max_new_tokens: 200 },
       })
+      return {
+        response: response.generated_text,
+        details: response.details,
+        model: response.model,
+        status: 200,
+      }
+    } catch (error) {
+      this.logger.error('Error en chat:', error)
+      throw error
+    }
+  }
+
+  async generateImage() {
+    const response = await this.hf.textToImage({
+      model: 'stabilityai/stable-diffusion-xl-base-1.0',
+      inputs: 'Un bosque mágico con luces de neón',
+    })
+    return response
+  }
+  async chatOtherModel(prompt: string) {
+    try {
+      this.logger.debug(`Prompt: ${prompt}`)
+      const response = await this.hf.textGeneration({
+        model: 'meta-llama/Meta-Llama-3-8B-Instruct', // CORRECTO
+        inputs: prompt,
+        parameters: { max_new_tokens: 200 },
+      })
       this.logger.debug({
         response: response.generated_text,
         details: response.details,

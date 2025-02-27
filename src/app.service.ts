@@ -5,8 +5,9 @@ import { HuggingfaceService } from './huggingface/huggingface.service'
 export class AppService {
   constructor(private readonly HuggingfaceService: HuggingfaceService) {}
   async getHello() {
-    return await this.HuggingfaceService.chat(
-      'Que es el scrapping, en programacion',
-    )
+    return await this.HuggingfaceService.generateImage()
+    // return await this.HuggingfaceService.chatOtherModel(
+    //   'Que es el scrapping, en programacion y dame ejemplo con node js',
+    // )
   }
 }
