@@ -23,8 +23,6 @@ export class HuggingfaceService {
         inputs: prompt,
         parameters: { max_new_tokens: 200 },
       })
-
-      this.logger.debug(`Chat response: ${JSON.stringify(response)}`)
       return {
         response: response.generated_text,
         details: response.details,
