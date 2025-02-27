@@ -5,6 +5,8 @@ import { HuggingfaceService } from './huggingface/huggingface.service'
 export class AppService {
   constructor(private readonly HuggingfaceService: HuggingfaceService) {}
   async getHello() {
-    return await this.HuggingfaceService.chat('Que es inteligencia artificial')
+    return await this.HuggingfaceService.chat(
+      'Que es el scrapping, en programacion',
+    )
   }
 }
