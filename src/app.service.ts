@@ -9,5 +9,8 @@ export class AppService {
     // return await this.HuggingfaceService.chatOtherModel(
     //   'Que es el scrapping, en programacion y dame ejemplo con node js',
     // )
+    // return await this.HuggingfaceService.chatOtherModel(
+    //   'Que es el scrapping, en programacion y dame ejemplo con node js',
+    // )
   }
 }
