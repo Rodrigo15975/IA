@@ -132,7 +132,6 @@ export class HuggingfaceService {
   private formatChatMessages(
     messages: Array<{ role: string; content: string }>,
   ): string {
-    // Format messages for Mistral instruction format
     return messages
       .map((msg) => {
         if (msg.role === 'user') {
