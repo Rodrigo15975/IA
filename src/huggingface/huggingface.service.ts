@@ -1,7 +1,6 @@
 import { HfInference } from '@huggingface/inference'
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-
 @Injectable()
 export class HuggingfaceService {
   private hf: HfInference
