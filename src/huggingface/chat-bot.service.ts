@@ -25,7 +25,8 @@ import { ConfigService } from '@nestjs/config'
 // import { ChatOpenAI } from '@langchain/openai'
 // import { PromptTemplate } from '@langchain/core/prompts'
 // import { StringOutputParser } from '@langchain/core/output_parsers'
-
+import { BufferMemory } from 'langchain/memory'
+import { ConversationChain } from 'langchain/chains'
 import { HuggingFaceInference } from '@langchain/community/llms/hf'
 import { PromptTemplate } from '@langchain/core/prompts'
 import { StringOutputParser } from '@langchain/core/output_parsers'
@@ -34,7 +35,7 @@ export class ChatBotsService {
   private readonly hf: HfInference
   private readonly conversationHistory: string[] = []
   private readonly chatModel: HuggingFaceInference
-
+  private readonly chain: ConversationChain
   // private readonly chatModel: ChatOpenAI
   // private readonly chatModel: ChatOllama;
   constructor(private readonly configService: ConfigService) {
@@ -47,6 +48,15 @@ export class ChatBotsService {
       temperature: 0.8,
       // maxTokens: ,
     })
+    const promptTemplate = PromptTemplate.fromTemplate(
+      'Eres un asistente útil. Responde a la siguiente consulta: {input}\n\nHistorial de la conversación: {history}',
+    )
+    this.chain = new ConversationChain({
+      llm: this.chatModel,
+      memory: new BufferMemory(), // Almacena el historial de la conversación
+      prompt: promptTemplate,
+    })
+
     // this.chatModel = new ChatOpenAI({
     //   openAIApiKey: this.configService.get<string>('OPENAI_API_KEY'),
     //   modelName: 'gpt-3.5-turbo-1106', // Modelo actualizado para 2025
@@ -56,19 +66,18 @@ export class ChatBotsService {
 
   async chatGPT(basicMessageDto: string) {
     try {
-      const promptTemplate = PromptTemplate.fromTemplate(
-        'Eres un asistente útil. Responde a la siguiente consulta: {query}',
-      )
+      // const chain = promptTemplate
+      //   .pipe(this.chatModel)
+      //   .pipe(new StringOutputParser())
 
-      const chain = promptTemplate
-        .pipe(this.chatModel)
-        .pipe(new StringOutputParser())
-
-      const response = await chain.invoke({
-        query: basicMessageDto,
+      const response = await this.chain.call({
+        input: basicMessageDto,
       })
-
-      const formatResponse = this.formatMessage(response)
+      const formatResponse = this.formatMessage(response.response)
+      Logger.debug({
+        formatResponse,
+        response,
+      })
       return { formatResponse }
     } catch (error) {
       Logger.error(`Error in chatGPT: ${error.message}`, error.stack)
@@ -79,7 +88,9 @@ export class ChatBotsService {
     }
   }
   private formatMessage(response: string) {
-    return response.split('\n').join('')
+    return response
+      .replace(/\d+\.\s*Usuario:\s*/g, '')
+      .replace(/\d+\.\s*Asistente:\s*/g, '')
   }
 
   async generateResponse(prompt: string) {
