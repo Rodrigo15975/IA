@@ -8,11 +8,9 @@ export class AppService {
     private readonly HuggingfaceService: HuggingfaceService,
     private readonly chatBotService: ChatBotsService,
   ) {}
-  async getHello() {
+  async getHello(message: string) {
     // return await this.HuggingfaceService.generateImage()
-    return await this.chatBotService.generateResponse(
-      '¿Hi there, what can you do?',
-    )
+    return await this.chatBotService.chatGPT(message)
     // return await this.HuggingfaceService.chatOtherModel(
     //   'Que es el scrapping, en programacion y dame ejemplo con node js',
     // )
