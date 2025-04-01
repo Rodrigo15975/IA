@@ -18,7 +18,7 @@ export class HuggingfaceService {
     try {
       this.logger.debug(`Prompt: ${prompt}`)
       const response = await this.hf.textGeneration({
-        model: 'HuggingFaceH4/zephyr-7b-alpha', // CORRECTO
+        model: 'HuggingFaceH4/zephyr-7b-alpha',
         inputs: prompt,
         parameters: { max_new_tokens: 200 },
       })
